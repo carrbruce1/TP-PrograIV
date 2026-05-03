@@ -1,0 +1,67 @@
+<header class="navbar">
+
+    <!-- LOGO -->
+
+    <div class="logo">
+
+        <img src="img/translogo.png" alt="" class="logo-img">
+
+        <h1>
+            RoyalBet
+        </h1>
+
+    </div>
+
+    <!-- NAV -->
+    <nav>
+
+        <ul class="nav-links">
+
+            <li>
+                <a
+                    routerLink="/"
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true }"
+                >
+                    Home
+                </a>
+            </li>
+
+            <li>
+                <a
+                    routerLink="/login"
+                    routerLinkActive="active"
+                >
+                    Login
+                </a>
+            </li>
+
+            <li>
+                <a
+                    routerLink="/register"
+                    routerLinkActive="active"
+                >
+                    Register
+                </a>
+            </li>
+
+            <li>
+                <a
+                    routerLink="/about"
+                    routerLinkActive="active"
+                >
+                    Quién Soy
+                </a>
+            </li>
+
+        </ul>
+
+    </nav>
+
+</header>
+
+<main class="main-container">
+    
+    <router-outlet></router-outlet>
+
+</main>
