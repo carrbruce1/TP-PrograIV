@@ -1,1 +1,51 @@
-<p>Aca es el register</p>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-5 card p-4 shadow">
+      <h2 class="text-center mb-4">Crear Cuenta</h2>
+
+      <form (ngSubmit)="onRegister()">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" name="nombre" [(ngModel)]="nombre" class="form-control" placeholder="Ej: Bruce" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Apellido</label>
+            <input type="text" name="apellido" [(ngModel)]="apellido" class="form-control" placeholder="Ej: Carr" required>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Edad</label>
+          <input type="number" name="edad" [(ngModel)]="edad" class="form-control" placeholder="Mínimo 18 años" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Correo Electrónico</label>
+          <input type="email" name="email" [(ngModel)]="email" class="form-control" placeholder="correo@ejemplo.com" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Contraseña</label>
+          <input type="password" name="password" [(ngModel)]="password" class="form-control" placeholder="••••••••" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 mb-3">
+          REGISTRARME AHORA
+        </button>
+      </form>
+      <div *ngIf="mensajeError" [ngClass]="esExito ? 'success-box' : 'error-box'">
+        <i class="bi" [ngClass]="esExito ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill'"></i>
+        {{ mensajeError }}
+    </div>
+      <hr>
+
+      <div class="text-center">
+        <p class="small text-muted">
+          ¿Ya sos parte de RoyalBet? 
+          <a routerLink="/login" class="text-orange">Iniciá Sesión</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
