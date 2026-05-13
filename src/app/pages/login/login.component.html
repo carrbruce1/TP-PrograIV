@@ -1,1 +1,35 @@
-<p>Aca es el login</p>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-4 card p-4 shadow">
+      <h2 class="text-center mb-4">Iniciar Sesión</h2>
+
+      <form (ngSubmit)="onLogin()">
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input type="email" name="email" [(ngModel)]="email" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Contraseña</label>
+          <input type="password" name="password" [(ngModel)]="password" class="form-control" required>
+        </div>
+
+        <div *ngIf="mensajeError" [ngClass]="esExito ? 'success-box' : 'error-box'">
+          <i class="bi" [ngClass]="esExito ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill'"></i>
+          {{ mensajeError }}
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 mb-3">Ingresar</button>
+      </form>
+
+      <hr>
+
+      <div class="text-center">
+        <p class="small text-muted">Acceso para pruebas:</p>
+        <button type="button" (click)="fastLogin()" class="btn btn-outline-info w-100">
+            Admin RoyalBet (admin1&#64;royalbet.com)
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

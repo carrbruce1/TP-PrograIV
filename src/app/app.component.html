@@ -1,67 +1,41 @@
 <header class="navbar">
-
-    <!-- LOGO -->
-
     <div class="logo">
-
         <img src="img/translogo.png" alt="" class="logo-img">
-
-        <h1>
-            RoyalBet
-        </h1>
-
+        <h1>RoyalBet</h1>
     </div>
 
-    <!-- NAV -->
     <nav>
-
         <ul class="nav-links">
-
             <li>
-                <a
-                    routerLink="/"
-                    routerLinkActive="active"
-                    [routerLinkActiveOptions]="{ exact: true }"
-                >
-                    Home
-                </a>
+                <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
             </li>
 
-            <li>
-                <a
-                    routerLink="/login"
-                    routerLinkActive="active"
-                >
-                    Login
-                </a>
-            </li>
+            <ng-container *ngIf="!usuarioLogueado">
+                <li>
+                    <a routerLink="/login" routerLinkActive="active">Login</a>
+                </li>
+                <li>
+                    <a routerLink="/register" routerLinkActive="active">Register</a>
+                </li>
+            </ng-container>
+
+            <ng-container *ngIf="usuarioLogueado">
+                <li>
+                    <a routerLink="/perfil" routerLinkActive="active">Mi Perfil</a>
+                </li>
+                <li class="user-info-nav">
+                    <span class="user-name">{{ usuarioLogueado.email.split('@')[0] }}</span>
+                    <button class="btn-logout-minimal" (click)="logout()">Salir</button>
+                </li>
+            </ng-container>
 
             <li>
-                <a
-                    routerLink="/register"
-                    routerLinkActive="active"
-                >
-                    Register
-                </a>
+                <a routerLink="/about" routerLinkActive="active">Quién Soy</a>
             </li>
-
-            <li>
-                <a
-                    routerLink="/about"
-                    routerLinkActive="active"
-                >
-                    Quién Soy
-                </a>
-            </li>
-
         </ul>
-
     </nav>
-
 </header>
 
 <main class="main-container">
-    
     <router-outlet></router-outlet>
-
 </main>
