@@ -6,7 +6,6 @@ import { firstValueFrom } from 'rxjs';
   providedIn: 'root'
 })
 export class PreguntadosService {
-  // URL que trae preguntas de opción múltiple de cualquier categoría al azar
   private apiUrl = 'https://opentdb.com/api.php?amount=1&type=multiple';
 
   constructor(private http: HttpClient) {}
@@ -18,7 +17,6 @@ export class PreguntadosService {
       if (respuesta && respuesta.results && respuesta.results.length > 0) {
         const item = respuesta.results[0];
         
-        // Juntamos las opciones y las mezclamos rápido para que no quede la correcta siempre al final
         const opciones = [...item.incorrect_answers, item.correct_answer].sort(() => Math.random() - 0.5);
 
         return {

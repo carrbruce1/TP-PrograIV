@@ -11,7 +11,6 @@ import { AuthService } from '../../../services/auth.service';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-
 export class RegisterComponent {
 
   email = '';
@@ -19,7 +18,6 @@ export class RegisterComponent {
   nombre = '';
   apellido = '';
   edad: number | null = null;
-  // edad = null;
   
   mensajeError: string = ''; 
   esExito: boolean = false;  
@@ -30,57 +28,46 @@ export class RegisterComponent {
     this.mensajeError = ''; 
     this.esExito = false;
 
-    if(
-      !this.nombre ||
-      !this.apellido ||
-      !this.email ||
-      !this.password ||
-      !this.edad === null
-    ){
+    if(!this.nombre || !this.apellido || !this.email || !this.password || this.edad == null){
       this.mensajeError = 'Completa todos los campos';
       return;
-    };
+    }
     
-    if(this.edad === null){
-      this.mensajeError = "Datos invalidos";
+    if(this.edad < 0 || this.edad > 100){
+      this.mensajeError = 'Ingrese una edad válida';
       return;
     }
 
-   if(this.edad < 0 || this.edad > 80){
+    try {
+      const { data, error } = await this.auth.signUp(this.email, this.password, {
+        nombre: this.nombre,
+        apellido: this.apellido,
+        edad: this.edad
+      });
 
-  this.mensajeError =
-  'Ingrese una edad válida';
+      if (error) {
+        this.esExito = false;
+        this.mensajeError = "Error: " + error.message;
+      } else {
+        await this.auth.signOut(); 
 
-  return;
-}
+        this.esExito = true;
+        this.mensajeError = "¡Cuenta creada! Por favor, confirmá tu email. Redirigiendo al Home...";
+        
+        // 2. Limpiamos formulario
+        this.email = '';
+        this.password = '';
+        this.nombre = '';
+        this.apellido = '';
+        this.edad = null;
 
-    const { data, error } = await this.auth.signUp(this.email, this.password, {
-      nombre: this.nombre,
-      apellido: this.apellido,
-      edad: this.edad
-    });
-
-    if (error) {
-      this.esExito = false;
-      this.mensajeError = "Error: " + error.message;
-    } else {
-    
-      this.esExito = true;
-      this.mensajeError = "¡Cuenta creada! Por favor, confirmá tu email para jugar.";
-      
-    
-      this.email = '';
-      this.password = '';
-      this.nombre = '';
-      this.apellido = '';
-      this.edad = null;
-      
-      setTimeout(() => {
-        this.router.navigate(['/']);
-      }, 4000);
-
+        setTimeout(() => {
+          this.router.navigate(['/home']); 
+        }, 4000);
+      }
+    } catch (err) {
+      this.mensajeError = "Ocurrió un error inesperado al registrar.";
+      console.error(err);
     }
   }
-
-  
 }
