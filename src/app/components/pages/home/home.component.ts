@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { RouterLink, RouterLinkActive, Router } from '@angular/router'; 
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth.service';
-import { RankingPosicionesComponent } from '../../../juegos/ranking-posiciones/ranking-posiciones.component';
+import { RankingPosicionComponent } from '../../../juegos/ranking-posiciones/ranking-posiciones.component';
+
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink, CommonModule, RankingPosicionesComponent], 
+  imports: [RouterLink, CommonModule, RankingPosicionComponent], 
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -21,7 +22,6 @@ export class HomeComponent implements OnInit {
     { nombre: 'Joker Trap', ruta: '/jokers-trap', icono: 'bi-pinwheel' }
   ];
 
-  
   constructor(private authService: AuthService, private router: Router) {}
 
   async ngOnInit() {

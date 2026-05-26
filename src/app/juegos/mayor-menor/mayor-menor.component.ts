@@ -1,5 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RankingService } from '../../services/ranking.service'; 
+import { AuthService } from '../../services/auth.service';       
 
 @Component({
   selector: 'app-mayor-menor',
@@ -19,14 +21,27 @@ export class MayorMenorComponent implements OnInit, OnDestroy {
   reloj: any;
 
   palos: string[] = ['♥', '♦', '♣', '♠'];
-
-  // Control de pantallas e interfaces
   pantallaInicio: boolean = true;
   huboError: boolean = false;
   mensajeError: string = '';
   efectoFallo: boolean = false; 
+  usuarioActual: string = 'Invitado';
 
-  ngOnInit() {}
+  constructor(
+    private rankingService: RankingService,
+    private authService: AuthService
+  ) {}
+
+  async ngOnInit() {
+    try {
+      const user = await this.authService.getUser();
+      if (user && user.email) {
+        this.usuarioActual = user.email.split('@')[0];
+      }
+    } catch (e) {
+      this.usuarioActual = 'Invitado';
+    }
+  }
 
   ngOnDestroy() {
     this.pararReloj();
@@ -112,6 +127,7 @@ export class MayorMenorComponent implements OnInit, OnDestroy {
     this.pararReloj();
     this.huboError = true;
     this.mensajeError = mensaje; 
+    this.rankingService.guardarPuntaje(this.usuarioActual, this.puntos, 'mayor_menor');
   }
 
   volverAlInicio() {

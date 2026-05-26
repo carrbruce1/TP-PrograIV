@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PreguntadosService } from '../../services/preguntados.service';
 import { AuthService } from '../../services/auth.service';
+import { RankingService } from '../../services/ranking.service';
 
 @Component({
   selector: 'app-preguntados',
@@ -22,14 +23,12 @@ export class PreguntadosComponent implements OnInit, OnDestroy {
   intervaloTiempo: any;
 
   usuarioActual: string = 'Invitado';
-  private supabase: any;
 
   constructor(
     private preguntadosService: PreguntadosService,
-    private authService: AuthService
-  ) {
-    this.supabase = (this.authService as any).supabase;
-  }
+    private authService: AuthService,
+    private rankingService: RankingService
+  ) {}
 
   async ngOnInit() {
     try {
@@ -100,24 +99,15 @@ export class PreguntadosComponent implements OnInit, OnDestroy {
 
   async finalizarJuego(motivo: string) {
     this.limpiarTemporizador();
-    
     this.puntajeAnterior = this.puntaje;
-    
-    
     this.estadoJuego = 'INICIO'; 
-    console.log(`Partida finalizada: ${motivo}. Volviendo a la pantalla de emparejamiento.`);
-    
-   
-    if (this.supabase && this.puntaje > 0) {
+    console.log(`Partida finalizada: ${motivo}. Volviendo a la pantalla de inicio.`);
+    if (this.puntaje > 0) {
       try {
-        await this.supabase
-          .from('ranking_preguntados')
-          .insert([
-            { usuario: this.usuarioActual, puntaje: this.puntaje, fecha: new Date() }
-          ]);
-        console.log('Registro de alta puntuación subido exitosamente a Supabase.');
+        await this.rankingService.guardarPuntaje(this.usuarioActual, this.puntaje, 'preguntados');
+        console.log('Registro de alta puntuación subido exitosamente a la tabla ranking.');
       } catch (err) {
-        console.error('Error de red al intentar impactar la base de datos:', err);
+        console.error('Error al impactar el ranking:', err);
       }
     }
   }

@@ -1,5 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RankingService } from '../../services/ranking.service';
+import { AuthService } from '../../services/auth.service';       
 
 @Component({
   selector: 'app-ahorcado',
@@ -13,8 +15,6 @@ export class AhorcadoComponent implements OnInit, OnDestroy {
   palabras: string[] = ['SISTEMA', 'KERNEL', 'PROTOCOLO', 'FIREWALL', 'ENCRIPTAR', 'BINARIO', 'CONSOLA'];
   palabraSecreta: string = '';
   guiones: string = '';
-  
-  // Control de pantallas
   pantallaInicio: boolean = true;
   juegoTerminado: boolean = false;
   huboError: boolean = false; 
@@ -27,8 +27,23 @@ export class AhorcadoComponent implements OnInit, OnDestroy {
   
   reloj: any;
   abc: string[] = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  usuarioActual: string = 'Invitado';
 
-  ngOnInit() {}
+  constructor(
+    private rankingService: RankingService,
+    private authService: AuthService
+  ) {}
+
+  async ngOnInit() {
+    try {
+      const user = await this.authService.getUser();
+      if (user && user.email) {
+        this.usuarioActual = user.email.split('@')[0];
+      }
+    } catch (e) {
+      this.usuarioActual = 'Invitado';
+    }
+  }
 
   ngOnDestroy() {
     this.pararReloj();
@@ -59,7 +74,6 @@ export class AhorcadoComponent implements OnInit, OnDestroy {
     this.tiempo = 40;
     this.juegoTerminado = false;
     this.huboError = false;
-    
     this.pararReloj();
     this.correrReloj();
     this.dibujarGuiones();
@@ -118,10 +132,12 @@ export class AhorcadoComponent implements OnInit, OnDestroy {
   finalizarRonda(mensaje: string) {
     this.pararReloj();
     
-    
     if (this.vidas <= 0 || this.tiempo <= 0) {
       this.huboError = true;
       this.mensajeError = mensaje;
+      if (this.puntos > 0) {
+        this.rankingService.guardarPuntaje(this.usuarioActual, this.puntos, 'ahorcado');
+      }
     }
   }
 }
