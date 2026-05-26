@@ -1,0 +1,46 @@
+<div class="ranking-universal-card">
+  <h2 class="main-title">🏆 SALÓN DE LA FAMA // LEADERBOARD</h2>
+  <p class="subtitle">Registros globales de la Sala de Juegos</p>
+
+  <div class="tabs-bar">
+    @for (juego of juegos; track juego.id) {
+      <button 
+        class="tab-btn" 
+        [class.active]="juegoActivo === juego.id"
+        (click)="cambiarJuego(juego.id)">
+        {{ juego.nombre }}
+      </button>
+    }
+  </div>
+
+  <div class="ranking-table-box">
+    
+    <div class="table-header-row">
+      <span>POS</span>
+      <span>OPERADOR / USUARIO</span>
+      <span class="text-right">SCORE_DAT</span>
+    </div>
+
+    @if (cargando) {
+      <div class="loading-box">
+        <div class="cyber-spinner"></div>
+        <p>Sincronizando registros...</p>
+      </div>
+    } @else {
+      <div class="rows-container">
+        @for (item of listaRanking; track $index; let i = $index) {
+          <div class="table-row" [class.top-three]="i < 3">
+            <span class="pos-num">#{{ i + 1 }}</span>
+            <span class="user-name">{{ item.usuario }}</span>
+            <span class="user-score text-right">{{ item.puntaje }} PTS</span>
+          </div>
+        } @empty {
+          <div class="no-records">
+            --- NO DATA FOUND FOR THIS SYSTEM ---
+          </div>
+        }
+      </div>
+    }
+
+  </div>
+</div>

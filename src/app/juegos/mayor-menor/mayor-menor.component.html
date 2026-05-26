@@ -1,62 +1,68 @@
 <div class="casino-table-container">
 
-  <div *ngIf="pantallaInicio" class="home-screen">
-    <div class="royal-logo">
-      <h1>MAYOR o MENOR</h1>
-      <div class="deck-decorator">🃏✨</div>
-    </div>
-    <button (click)="iniciarJuego()" class="btn-start">REPARTIR CARTAS</button>
-  </div>
-
-  <div *ngIf="!pantallaInicio" class="game-screen">
-    
-    <div class="casino-header">
-      <div class="stat-box">PUNTOS: <span class="gold-text">{{ puntos }}</span></div>
-      
-      <div class="stat-box">
-        INTENTOS: 
-        <span class="hearts-box">
-          <span *ngFor="let v of [1,2,3]" [class.lost-heart]="vidas < v">♥</span>
-        </span>
+  @if (pantallaInicio) {
+    <div class="home-screen">
+      <div class="royal-logo">
+        <h1>MAYOR o MENOR</h1>
+        <div class="deck-decorator">🃏✨</div>
       </div>
-      
-      <div class="stat-box">TIEMPO: <span [class.timer-alert]="tiempo < 10">{{ tiempo }}s</span></div>
+      <button (click)="iniciarJuego()" class="btn-start">REPARTIR CARTAS</button>
     </div>
-
-    <div *ngIf="!huboError" class="board-layout" [class.shake-error]="efectoFallo">
+  } @else {
+    <div class="game-screen">
       
-      <div class="card-zone">
-        <div class="playing-card" [ngClass]="cartaActual.color">
-          <div class="card-corner top-left">
-            <div>{{ cartaActual.numero }}</div>
-            <div>{{ cartaActual.palo }}</div>
+      <div class="casino-header">
+        <div class="stat-box">PUNTOS: <span class="gold-text">{{ puntos }}</span></div>
+        
+        <div class="stat-box">
+          INTENTOS: 
+          <span class="hearts-box">
+            @for (v of [1,2,3]; track v) {
+              <span [class.lost-heart]="vidas < v">♥</span>
+            }
+          </span>
+        </div>
+        
+        <div class="stat-box">TIEMPO: <span [class.timer-alert]="tiempo < 10">{{ tiempo }}s</span></div>
+      </div>
+
+      @if (!huboError) {
+        <div class="board-layout" [class.shake-error]="efectoFallo">
+          
+          <div class="card-zone">
+            <div class="playing-card" [ngClass]="cartaActual.color">
+              <div class="card-corner top-left">
+                <div>{{ cartaActual.numero }}</div>
+                <div>{{ cartaActual.palo }}</div>
+              </div>
+              <div class="card-center">{{ cartaActual.palo }}</div>
+              <div class="card-corner bottom-right">
+                <div>{{ cartaActual.numero }}</div>
+                <div>{{ cartaActual.palo }}</div>
+              </div>
+            </div>
           </div>
-          <div class="card-center">{{ cartaActual.palo }}</div>
-          <div class="card-corner bottom-right">
-            <div>{{ cartaActual.numero }}</div>
-            <div>{{ cartaActual.palo }}</div>
+
+          <p class="question-text">¿La siguiente carta será Mayor o Menor?</p>
+
+          <div class="action-buttons">
+            <button (click)="apostarMayor()" class="btn-casino-action higher">▲ MAYOR</button>
+            <button (click)="apostarMenor()" class="btn-casino-action lower">▼ MENOR</button>
           </div>
         </div>
-      </div>
+      } @else {
+        <div class="game-over-box">
+          <div class="game-over-title">FIN DE LA PARTIDA</div>
+          <p class="game-over-desc">{{ mensajeError }}</p>
+          
+          <div class="score-summary">
+            <p>Puntuación Final: <span class="gold-text">{{ puntos }} pts</span></p>
+          </div>
 
-      <p class="question-text">¿La siguiente carta será Mayor o Menor?</p>
+          <button (click)="volverAlInicio()" class="btn-casino-reset">CERRAR MESA</button>
+        </div>
+      }
 
-      <div class="action-buttons">
-        <button (click)="apostarMayor()" class="btn-casino-action higher">▲ MAYOR</button>
-        <button (click)="apostarMenor()" class="btn-casino-action lower">▼ MENOR</button>
-      </div>
     </div>
-
-    <div *ngIf="huboError" class="game-over-box">
-      <div class="game-over-title">FIN DE LA PARTIDA</div>
-      <p class="game-over-desc">{{ mensajeError }}</p>
-      
-      <div class="score-summary">
-        <p>Puntuación Final: <span class="gold-text">{{ puntos }} pts</span></p>
-      </div>
-
-      <button (click)="volverAlInicio()" class="btn-casino-reset">CERRAR MESA</button>
-    </div>
-
-  </div>
+  }
 </div>

@@ -2,57 +2,66 @@
   
   <div class="scanlines"></div>
 
-  <div *ngIf="pantallaInicio" class="home-screen">
-    <div class="glitch-box">
-      <h1 data-text="DECRYPTOR_OS">AHORCADO</h1>
+  @if (pantallaInicio) {
+    <div class="home-screen">
+      <div class="glitch-box">
+        <h1 data-text="DECRYPTOR_OS">AHORCADO</h1>
+      </div>
+      <p class="blink">ESTADO: ESPERANDO CREDENCIALES...</p>
+      <button (click)="iniciarJuego()" class="btn-start">INICIAR_SESION</button>
     </div>
-    <p class="blink">ESTADO: ESPERANDO CREDENCIALES...</p>
-    <button (click)="iniciarJuego()" class="btn-start">INICIAR_SESION</button>
-  </div>
+  } @else {
+    <div class="game-screen">
+      
+      <div class="terminal-header">
+        <div class="header-item">USUARIO: <span class="cyan">GUEST_USER</span></div>
+        <div class="header-item">SCORE: <span class="cyan">{{ puntos }}</span></div>
+        <div class="header-item">TIMER: <span [class.red]="tiempo < 10">{{ tiempo }}s</span></div>
+      </div>
 
-  <div *ngIf="!pantallaInicio" class="game-screen">
-    
-    <div class="terminal-header">
-      <div class="header-item">USUARIO: <span class="cyan">GUEST_USER</span></div>
-      <div class="header-item">SCORE: <span class="cyan">{{ puntos }}</span></div>
-      <div class="header-item">TIMER: <span [class.red]="tiempo < 10">{{ tiempo }}s</span></div>
-    </div>
+      @if (!huboError) {
+        <div>
+          <div class="visual-status">
+            <p>INTEGRIDAD DEL NÚCLEO:</p>
+            <div class="health-bar">
+              @for (v of [1,2,3,4,5,6]; track v) {
+                <div class="health-segment" [class.lost]="vidas < v"></div>
+              }
+            </div>
+          </div>
 
-    <div *ngIf="!huboError">
-      <div class="visual-status">
-        <p>INTEGRIDAD DEL NÚCLEO:</p>
-        <div class="health-bar">
-          <div class="health-segment" *ngFor="let v of [1,2,3,4,5,6]" [class.lost]="vidas < v"></div>
+          <div class="word-box">
+            <h2>{{ guiones }}</h2>
+          </div>
+
+          @if (juegoTerminado) {
+            <div class="win-panel">
+              <p class="blink">✔ ACCESO CONCEDIDO (+10 PTS)</p>
+              <button (click)="nuevaPalabra()" class="btn-next">PRÓXIMO_NIVEL ></button>
+            </div>
+          } @else {
+            <div class="keyboard">
+              @for (l of abc; track l) {
+                <button 
+                  (click)="presionarLetra(l)"
+                  [disabled]="letrasUsadas.includes(l)"
+                  class="key">
+                  {{ l }}
+                </button>
+              }
+            </div>
+          }
         </div>
-      </div>
+      } @else {
+        <div class="error-panel">
+          <div class="error-title">❌ SYSTEM FAILURE ❌</div>
+          <p class="error-desc">{{ mensajeError }}</p>
+          <p>La palabra clave era: <span class="revealed-word">{{ palabraSecreta }}</span></p>
+          <p class="blink text-small">VÍNCULO DAÑADO. REINICIANDO TERMINAL...</p>
+          <button (click)="volverAlInicio()" class="btn-error-reset">VOLVER_AL_MENU</button>
+        </div>
+      }
 
-      <div class="word-box">
-        <h2>{{ guiones }}</h2>
-      </div>
-
-      <div *ngIf="juegoTerminado" class="win-panel">
-        <p class="blink">✔ ACCESO CONCEDIDO (+10 PTS)</p>
-        <button (click)="nuevaPalabra()" class="btn-next">PRÓXIMO_NIVEL ></button>
-      </div>
-
-      <div *ngIf="!juegoTerminado" class="keyboard">
-        <button 
-          *ngFor="let l of abc" 
-          (click)="presionarLetra(l)"
-          [disabled]="letrasUsadas.includes(l)"
-          class="key">
-          {{ l }}
-        </button>
-      </div>
     </div>
-
-    <div *ngIf="huboError" class="error-panel">
-      <div class="error-title">❌ SYSTEM FAILURE ❌</div>
-      <p class="error-desc">{{ mensajeError }}</p>
-      <p>La palabra clave era: <span class="revealed-word">{{ palabraSecreta }}</span></p>
-      <p class="blink text-small">VÍNCULO DAÑADO. REINICIANDO TERMINAL...</p>
-      <button (click)="volverAlInicio()" class="btn-error-reset">VOLVER_AL_MENU</button>
-    </div>
-
-  </div>
+  }
 </div>

@@ -10,40 +10,47 @@
     </div>
   </div>
 
-  <div *ngIf="estaAbierto" class="chat-widget-body">
-    
-    <ng-container *ngIf="usuarioActual !== 'Invitado'">
+  @if (estaAbierto) {
+    <div class="chat-widget-body">
       
-      <div class="messages-viewport" #scrollContainer>
-        <div *ngFor="let msg of mensajes" 
-             [ngClass]="{'my-message': msg.usuario === usuarioActual, 'other-message': msg.usuario !== usuarioActual}"
-             class="msg-row">
-          
-          <div class="msg-balloon">
-            <div class="msg-user" *ngIf="msg.usuario !== usuarioActual">{{ msg.usuario }}</div>
-            <p class="msg-text">{{ msg.texto }}</p>
-            <span class="msg-time">{{ msg.hora }}</span>
-          </div>
-          
+      @if (usuarioActual !== 'Invitado') {
+        
+        <div class="messages-viewport" #scrollContainer>
+          @for (msg of mensajes; track $index) {
+            <div [ngClass]="{'my-message': msg.usuario === usuarioActual, 'other-message': msg.usuario !== usuarioActual}"
+                 class="msg-row">
+              
+              <div class="msg-balloon">
+                @if (msg.usuario !== usuarioActual) {
+                  <div class="msg-user">{{ msg.usuario }}</div>
+                }
+                <p class="msg-text">{{ msg.texto }}</p>
+                <span class="msg-time">{{ msg.hora }}</span>
+              </div>
+              
+            </div>
+          }
         </div>
-      </div>
 
-      <div class="chat-widget-footer">
-        <input type="text" 
-               [(ngModel)]="nuevoMensaje" 
-               (keyup.enter)="enviar()" 
-               placeholder="Escribí un mensaje..." />
-        <button (click)="enviar()">➤</button>
-      </div>
+        <div class="chat-widget-footer">
+          <input type="text" 
+                 [(ngModel)]="nuevoMensaje" 
+                 (keyup.enter)="enviar()" 
+                 placeholder="Escribí un mensaje..." />
+          <button (click)="enviar()">➤</button>
+        </div>
 
-    </ng-container>
+      } @else {
+        
+        <div class="chat-locked-box">
+          <div class="locked-icon">🔒</div>
+          <p class="locked-title">SISTEMA RESTRINGIDO</p>
+          <p class="locked-text">Iniciá sesión con tu cuenta para interactuar en el chat en vivo.</p>
+        </div>
 
-    <div *ngIf="usuarioActual === 'Invitado'" class="chat-locked-box">
-      <div class="locked-icon">🔒</div>
-      <p class="locked-title">SISTEMA RESTRINGIDO</p>
-      <p class="locked-text">Iniciá sesión con tu cuenta para interactuar en el chat en vivo.</p>
+      }
+
     </div>
-
-  </div>
+  }
 
 </div>

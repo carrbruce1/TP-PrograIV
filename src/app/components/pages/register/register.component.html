@@ -46,10 +46,14 @@
           REGISTRARME AHORA
         </button>
       </form>
-      <div *ngIf="mensajeError" [ngClass]="esExito ? 'success-box' : 'error-box'">
-        <i class="bi" [ngClass]="esExito ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill'"></i>
-        {{ mensajeError }}
-    </div>
+      
+      @if (mensajeError) {
+        <div [ngClass]="esExito ? 'success-box' : 'error-box'">
+          <i class="bi" [ngClass]="esExito ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill'"></i>
+          {{ mensajeError }}
+        </div>
+      }
+      
       <hr>
 
       <div class="text-center">

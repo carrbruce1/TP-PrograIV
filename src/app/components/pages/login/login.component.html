@@ -14,10 +14,12 @@
           <input type="password" name="password" [(ngModel)]="password" class="form-control" required>
         </div>
 
-        <div *ngIf="mensajeError" [ngClass]="esExito ? 'success-box' : 'error-box'">
-          <i class="bi" [ngClass]="esExito ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill'"></i>
-          {{ mensajeError }}
-        </div>
+        @if (mensajeError) {
+          <div [ngClass]="esExito ? 'success-box' : 'error-box'">
+            <i class="bi" [ngClass]="esExito ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill'"></i>
+            {{ mensajeError }}
+          </div>
+        }
 
         <button type="submit" class="btn btn-primary w-100 mb-3">Ingresar</button>
       </form>
@@ -37,7 +39,7 @@
       </div>
       <div class="text-center">
         <button type="button" (click)="fastlogin3()" class="btn btn-outline-info w-100">
-            Admin 3 -Jazmin
+            Admin 3 - Jazmin
         </button>
       </div>
     </div>

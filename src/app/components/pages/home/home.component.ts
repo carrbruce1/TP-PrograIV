@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink, RouterLinkActive, Router } from '@angular/router'; 
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../../services/auth.service'; 
-
+import { AuthService } from '../../../services/auth.service';
+import { RankingPosicionesComponent } from '../../../juegos/ranking-posiciones/ranking-posiciones.component';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink, CommonModule], 
+  imports: [RouterLink, CommonModule, RankingPosicionesComponent], 
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

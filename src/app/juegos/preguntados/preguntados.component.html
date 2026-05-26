@@ -1,49 +1,58 @@
 <div class="trivia-container">
   
-  <div *ngIf="puntajeAnterior !== null" class="last-score-banner">
-    ÚLTIMO PUNTAJE: <span>{{ puntajeAnterior }} PTS</span>
-  </div>
-
-  <div *ngIf="estadoJuego === 'INICIO'" class="cyber-card start-card">
-    <div class="cyber-glitch-title">PREGUNTADOS</div>
-    <p class="cyber-subtitle">Supervivencia // Protocolo Activo</p>
-    
-    <div class="cyber-rules">
-      <div class="rule-item"><span>01 /</span> 35 segundos por respuesta.</div>
-      <div class="rule-item"><span>02 /</span> Cada acierto otorga +10 puntos.</div>
-      <div class="rule-item"><span>03 /</span> Un solo error apaga los sistemas.</div>
+  @if (puntajeAnterior !== null) {
+    <div class="last-score-banner">
+      ÚLTIMO PUNTAJE: <span>{{ puntajeAnterior }} PTS</span>
     </div>
-    
-    <button class="btn-cyber-primary" (click)="iniciarJuego()">
-      INICIAR ENLACE
-    </button>
-  </div>
+  }
 
-  <div *ngIf="cargandoPregunta" class="cyber-card loading-card">
-    <div class="cyber-spinner"></div>
-    <p class="loading-text">Sincronizando base de datos...</p>
-  </div>
-
-  <div *ngIf="estadoJuego === 'PREGUNTA' && !cargandoPregunta" class="cyber-card game-card">
-    <div class="game-header">
-      <span class="cyber-badge">{{ categoriaActual }}</span>
-      <div class="cyber-timer" [ngClass]="{'timer-critical': tiempoRestante <= 10}">
-        SYS_TIME: {{ tiempoRestante }}s
+  @if (estadoJuego === 'INICIO') {
+    <div class="cyber-card start-card">
+      <div class="cyber-glitch-title">PREGUNTADOS</div>
+      <p class="cyber-subtitle">Supervivencia // Protocolo Activo</p>
+      
+      <div class="cyber-rules">
+        <div class="rule-item"><span>01 /</span> 35 segundos por respuesta.</div>
+        <div class="rule-item"><span>02 /</span> Cada acierto otorga +10 puntos.</div>
+        <div class="rule-item"><span>03 /</span> Un solo error apaga los sistemas.</div>
       </div>
-    </div>
-
-    <div class="cyber-score">SCORE_DAT: <span>{{ puntaje }}</span></div>
-
-    <h2 class="cyber-question" [innerHTML]="preguntaActual?.pregunta"></h2>
-
-    <div class="cyber-options-grid">
-      <button 
-        *ngFor="let opcion of preguntaActual?.opciones" 
-        class="btn-cyber-option" 
-        (click)="verificarRespuesta(opcion)"
-        [innerHTML]="opcion">
+      
+      <button class="btn-cyber-primary" (click)="iniciarJuego()">
+        INICIAR ENLACE
       </button>
     </div>
-  </div>
+  }
+
+  @if (cargandoPregunta) {
+    <div class="cyber-card loading-card">
+      <div class="cyber-spinner"></div>
+      <p class="loading-text">Sincronizando base de datos...</p>
+    </div>
+  }
+
+  @if (estadoJuego === 'PREGUNTA' && !cargandoPregunta) {
+    <div class="cyber-card game-card">
+      <div class="game-header">
+        <span class="cyber-badge">{{ categoriaActual }}</span>
+        <div class="cyber-timer" [ngClass]="{'timer-critical': tiempoRestante <= 10}">
+          SYS_TIME: {{ tiempoRestante }}s
+        </div>
+      </div>
+
+      <div class="cyber-score">SCORE_DAT: <span>{{ puntaje }}</span></div>
+
+      <h2 class="cyber-question" [innerHTML]="preguntaActual?.pregunta"></h2>
+
+      <div class="cyber-options-grid">
+        @for (opcion of preguntaActual?.opciones; track opcion) {
+          <button 
+            class="btn-cyber-option" 
+            (click)="verificarRespuesta(opcion)"
+            [innerHTML]="opcion">
+          </button>
+        }
+      </div>
+    </div>
+  }
 
 </div>

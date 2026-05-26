@@ -3,99 +3,125 @@
   <div class="hud-top">
     <div class="glitch-title">JOKER'S TRAP // COMPLETE FLOW</div>
     <div class="status-turn" [class.user-active]="esTurnoJugador">
-      <span *ngIf="esTurnoJugador && !yaRoboDeIA">▶ PASO 1: SELECCIONÁ UNA CARTA ENEMIGA PARA ROBARLE</span>
-      <span *ngIf="esTurnoJugador && yaRoboDeIA && tieneParDisponible">⚡ PASO 2: ¡TENÉS UN PAR! SELECCIONALO Y DESTRUILO</span>
-      <span *ngIf="esTurnoJugador && yaRoboDeIA && !tieneParDisponible">⚠️ PASO 2: NO TENÉS PARES. OBLIGADO A ROBAR DEL MAZO CENTRAL</span>
-      <span *ngIf="!esTurnoJugador">⏳ EL SOMBRERERO: PROCESANDO NODOS...</span>
+      @if (esTurnoJugador && !yaRoboDeIA) {
+        <span>▶ PASO 1: SELECCIONÁ UNA CARTA ENEMIGA PARA ROBARLE</span>
+      }
+      @if (esTurnoJugador && yaRoboDeIA && tieneParDisponible) {
+        <span>⚡ PASO 2: ¡TENÉS UN PAR! SELECCIONALO Y DESTRUILO</span>
+      }
+      @if (esTurnoJugador && yaRoboDeIA && !tieneParDisponible) {
+        <span>⚠️ PASO 2: NO TENÉS PARES. OBLIGADO A ROBAR DEL MAZO CENTRAL</span>
+      }
+      @if (!esTurnoJugador) {
+        <span>⏳ EL SOMBRERERO: PROCESANDO NODOS...</span>
+      }
     </div>
   </div>
 
-  <div *ngIf="mensajeError" class="error-banner">
-    <span>{{ mensajeError }}</span>
-  </div>
-
-  <div *ngIf="castigoActivo" class="virus-banner">
-    <span class="blink-text">{{ castigoActivo }}</span>
-  </div>
-
-  <div class="overlay-final" *ngIf="juegoTerminado">
-    <div class="modal-box">
-      <h2>{{ mensajeResultado }}</h2>
-      <button (click)="iniciarNuevaPartida()" class="btn-cyber-reload">RESET MATRIX</button>
+  @if (mensajeError) {
+    <div class="error-banner">
+      <span>{{ mensajeError }}</span>
     </div>
-  </div>
+  }
 
-  <div class="board-grid" *ngIf="!juegoTerminado">
-    
-    <div class="row-ia">
-      <div class="section-title">🎩 NODOS ENEMIGOS (Cartas: {{ manoIA.length }})</div>
-      <div class="deck-row">
-        <div 
-          *ngFor="let carta of manoIA; let i = index" 
-          class="card"
-          [ngClass]="revelarManoIA ? 'card-front ' + carta.color : 'card-back'"
-          [class.clickable-enemy-card]="esTurnoJugador && !yaRoboDeIA"
-          (click)="robarCartaA_IA(i)">
-          
-          <div *ngIf="revelarManoIA">
-            <div class="card-num-top">{{ carta.numero }}</div>
-            <div class="card-suit-center">{{ carta.palo }}</div>
+  @if (castigoActivo) {
+    <div class="virus-banner">
+      <span class="blink-text">{{ castigoActivo }}</span>
+    </div>
+  }
+
+  @if (juegoTerminado) {
+    <div class="overlay-final">
+      <div class="modal-box">
+        <h2>{{ mensajeResultado }}</h2>
+        <button (click)="iniciarNuevaPartida()" class="btn-cyber-reload">RESET MATRIX</button>
+      </div>
+    </div>
+  }
+
+  @if (!juegoTerminado) {
+    <div class="board-grid">
+      
+      <div class="row-ia">
+        <div class="section-title">🎩 NODOS ENEMIGOS (Cartas: {{ manoIA.length }})</div>
+        <div class="deck-row">
+          @for (carta of manoIA; track $index; let i = $index) {
+            <div 
+              class="card"
+              [ngClass]="revelarManoIA ? 'card-front ' + carta.color : 'card-back'"
+              [class.clickable-enemy-card]="esTurnoJugador && !yaRoboDeIA"
+              (click)="robarCartaA_IA(i)">
+              
+              @if (revelarManoIA) {
+                <div>
+                  <div class="card-num-top">{{ carta.numero }}</div>
+                  <div class="card-suit-center">{{ carta.palo }}</div>
+                </div>
+              } @else {
+                <div>☠</div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="row-center">
+        <div class="network-deck" [class.clickable-deck]="esTurnoJugador && yaRoboDeIA && !tieneParDisponible" (click)="robarMazoYPasar()">
+          <div class="well-title">MAZO RED</div>
+          <div class="card card-back mazo-central-carta" [class.estatico]="!esTurnoJugador || !yaRoboDeIA || tieneParDisponible">
+            <span class="pulse-icon">💾</span>
           </div>
-          <div *ngIf="!revelarManoIA">☠</div>
+          <div class="deck-count">Resto: {{ mazo.length }} u</div>
         </div>
-      </div>
-    </div>
 
-    <div class="row-center">
-      <div class="network-deck" [class.clickable-deck]="esTurnoJugador && yaRoboDeIA && !tieneParDisponible" (click)="robarMazoYPasar()">
-        <div class="well-title">MAZO RED</div>
-        <div class="card card-back mazo-central-carta" [class.estatico]="!esTurnoJugador || !yaRoboDeIA || tieneParDisponible">
-          <span class="pulse-icon">💾</span>
-        </div>
-        <div class="deck-count">Resto: {{ mazo.length }} u</div>
-      </div>
-
-      <div class="discard-well">
-        <div class="well-title">POZO DE DESCARTE</div>
-        <div class="well-pile">
-          <div *ngIf="pozoDescarte.length > 0" class="card card-front discarded" [ngClass]="pozoDescarte[pozoDescarte.length - 1].color">
-            <div>{{ pozoDescarte[pozoDescarte.length - 1].numero }}</div>
-            <div>{{ pozoDescarte[pozoDescarte.length - 1].palo }}</div>
+        <div class="discard-well">
+          <div class="well-title">POZO DE DESCARTE</div>
+          <div class="well-pile">
+            @if (pozoDescarte.length > 0) {
+              <div class="card card-front discarded" [ngClass]="pozoDescarte[pozoDescarte.length - 1].color">
+                <div>{{ pozoDescarte[pozoDescarte.length - 1].numero }}</div>
+                <div>{{ pozoDescarte[pozoDescarte.length - 1].palo }}</div>
+              </div>
+            } @else {
+              <div class="well-empty">VACÍO</div>
+            }
           </div>
-          <div *ngIf="pozoDescarte.length === 0" class="well-empty">VACÍO</div>
+          <div class="well-count">Purgados: {{ pozoDescarte.length }}</div>
         </div>
-        <div class="well-count">Purgados: {{ pozoDescarte.length }}</div>
       </div>
-    </div>
 
-    <div class="row-user">
-      <div class="user-controls">
-        <div class="section-title">🟢 TU TERMINAL LOCAL (Cartas: {{ manoJugador.length }})</div>
-        
-        <div class="botones-flujo">
-          <button class="btn-action-discard" (click)="tirarParejaAlPozo()" [disabled]="!esTurnoJugador || !yaRoboDeIA || !tieneParDisponible || jugadorBloqueado">
-            💥 DESTRUIR PAR
-          </button>
+      <div class="row-user">
+        <div class="user-controls">
+          <div class="section-title">🟢 TU TERMINAL LOCAL (Cartas: {{ manoJugador.length }})</div>
           
-          <button class="btn-action-pass" (click)="robarMazoYPasar()" [disabled]="!esTurnoJugador || !yaRoboDeIA || tieneParDisponible">
-            📥 ROBAR MAZO Y PASAR
-          </button>
+          <div class="botones-flujo">
+            <button class="btn-action-discard" (click)="tirarParejaAlPozo()" [disabled]="!esTurnoJugador || !yaRoboDeIA || !tieneParDisponible || jugadorBloqueado">
+              💥 DESTRUIR PAR
+            </button>
+            
+            <button class="btn-action-pass" (click)="robarMazoYPasar()" [disabled]="!esTurnoJugador || !yaRoboDeIA || tieneParDisponible">
+              📥 ROBAR MAZO Y PASAR
+            </button>
+          </div>
         </div>
+
+        <div class="deck-row">
+          @for (carta of manoJugador; track $index) {
+            <div 
+              class="card card-front" 
+              [ngClass]="[carta.color, carta.seleccionada ? 'selected' : '', revelarManoJugador ? 'firewall-down' : '']"
+              (click)="seleccionarCartaJugador(carta)">
+              <div class="card-num-top">{{ carta.numero }}</div>
+              <div class="card-suit-center">{{ carta.palo }}</div>
+            </div>
+          }
+        </div>
+
+        @if (jugadorBloqueado) {
+          <p class="error-text">⚠️ CRITICAL: SYSTEM FREEZE.</p>
+        }
       </div>
 
-      <div class="deck-row">
-        <div 
-          *ngFor="let carta of manoJugador" 
-          class="card card-front" 
-          [ngClass]="[carta.color, carta.seleccionada ? 'selected' : '', revelarManoJugador ? 'firewall-down' : '']"
-          (click)="seleccionarCartaJugador(carta)">
-          <div class="card-num-top">{{ carta.numero }}</div>
-          <div class="card-suit-center">{{ carta.palo }}</div>
-        </div>
-      </div>
-
-      <p *ngIf="jugadorBloqueado" class="error-text">⚠️ CRITICAL: SYSTEM FREEZE.</p>
     </div>
-
-  </div>
+  }
 </div>

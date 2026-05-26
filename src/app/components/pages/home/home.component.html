@@ -1,34 +1,44 @@
-
 <main class="main-content">
   <header class="section-header">
     <h1>Sala de Juegos</h1>
-    <p *ngIf="!usuarioLogueado" class="status-msg warning">
-      Debes estar registrado para poder jugar.
-    </p>
+    @if (!usuarioLogueado) {
+      <p class="status-msg warning">
+        Debes estar registrado para poder jugar.
+      </p>
+    }
   </header>
 
   <section class="grid-container">
-    <article class="card-item" *ngFor="let juego of juegos">
-      <div class="card-visual" [class.locked]="!usuarioLogueado">
-        <i class="bi {{ juego.icono }}"></i>
-        <div *ngIf="!usuarioLogueado" class="overlay-lock">
-          <i class="bi bi-lock-fill"></i>
-          <span>BLOQUEADO</span>
+    @for (juego of juegos; track juego.nombre) {
+      <article class="card-item">
+        <div class="card-visual" [class.locked]="!usuarioLogueado">
+          <i class="bi {{ juego.icono }}"></i>
+          @if (!usuarioLogueado) {
+            <div class="overlay-lock">
+              <i class="bi bi-lock-fill"></i>
+              <span>BLOQUEADO</span>
+            </div>
+          }
         </div>
-      </div>
-      
-      <div class="card-body">
-        <h3>{{ juego.nombre }}</h3>
         
-        <button *ngIf="usuarioLogueado" [routerLink]="juego.ruta" class="btn-action">
-          ¡JUGAR AHORA!
-        </button>
-        
-        <button *ngIf="!usuarioLogueado" routerLink="/login" class="btn-disabled">
-          LOGUEATE PARA JUGAR
-        </button>
-      </div>
-    </article>
+        <div class="card-body">
+          <h3>{{ juego.nombre }}</h3>
+          
+          @if (usuarioLogueado) {
+            <button [routerLink]="juego.ruta" class="btn-action">
+              ¡JUGAR AHORA!
+            </button>
+          } @else {
+            <button routerLink="/login" class="btn-disabled">
+              LOGUEATE PARA JUGAR
+            </button>
+          }
+        </div>
+      </article>
+    }
   </section>
 
+  <div class="tu-contenedor-del-home">
+    <app-ranking-posiciones></app-ranking-posiciones>
+  </div>
 </main>
