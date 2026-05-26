@@ -1,0 +1,283 @@
+.cyber-game-container {
+  background-color: #070a0e;
+  background-image: linear-gradient(rgba(18, 24, 32, 0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(18, 24, 32, 0.8) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: #e2e8f0;
+  min-height: 100vh;
+  padding: 30px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* HUD TOP */
+.hud-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #1e293b;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+.glitch-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: #38bdf8;
+  text-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+}
+.status-turn {
+  background: #1e293b;
+  padding: 8px 15px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  border: 1px solid #334155;
+}
+.status-turn.user-active {
+  color: #00ff66;
+  border-color: #00ff66;
+  box-shadow: 0 0 10px rgba(0, 255, 102, 0.2);
+}
+
+/* ERROR BANNER */
+.error-banner {
+  background-color: rgba(220, 38, 38, 0.2);
+  border: 1px dashed #dc2626;
+  color: #f87171;
+  text-align: center;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-weight: bold;
+  box-shadow: 0 0 12px rgba(220, 38, 38, 0.3);
+}
+
+/* VIRUS BANNER */
+.virus-banner {
+  background-color: rgba(239, 68, 68, 0.15);
+  border: 1px solid #ef4444;
+  color: #f87171;
+  text-align: center;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 25px;
+  font-weight: bold;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.blink-text { animation: blink 1.5s infinite; }
+
+/* TABLERO */
+.board-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.section-title {
+  font-size: 0.9rem;
+  color: #94a3b8;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+/* FILA CENTRAL MODIFICADA (Mazo al lado del pozo) */
+.row-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 80px;
+  background: rgba(15, 23, 42, 0.6);
+  padding: 25px;
+  border-radius: 8px;
+  border: 1px solid #1e293b;
+}
+
+.network-deck, .discard-well {
+  text-align: center;
+}
+
+.well-title {
+  font-size: 0.8rem;
+  color: #38bdf8;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+/* Estilo visual del Mazo */
+.deck-box-mesh {
+  width: 100px;
+  height: 140px;
+  border: 2px solid #38bdf8;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #0b1524 0%, #1e293b 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 10px;
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+}
+.clickable-deck .deck-box-mesh {
+  cursor: pointer;
+  border-color: #00ff66;
+  box-shadow: 0 0 20px rgba(0, 255, 102, 0.4);
+}
+.pulse-icon {
+  font-size: 2.5rem;
+}
+.clickable-deck .pulse-icon {
+  animation: blink 1s infinite;
+}
+
+/* Estilo del Pozo de descarte */
+.well-pile {
+  width: 100px;
+  height: 140px;
+  border: 2px dashed #64748b;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 10px;
+  background: rgba(7, 10, 14, 0.8);
+}
+.well-empty {
+  font-size: 0.7rem;
+  color: #475569;
+}
+.deck-count, .well-count { 
+  font-size: 0.75rem; 
+  color: #94a3b8; 
+  margin-top: 5px;
+}
+
+/* DECK ROWS (CENTRADAS) */
+.deck-row {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 15px 5px;
+  min-height: 160px;
+}
+
+/* CARTAS */
+.card {
+  width: 90px;
+  height: 130px;
+  border-radius: 6px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  user-select: none;
+}
+.row-user .card { cursor: pointer; }
+
+.card:hover {
+  transform: translateY(-10px);
+}
+
+.card-back {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  border: 2px solid #3b82f6;
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+}
+
+.card-front {
+  background-color: #ffffff;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+.card-num-top { font-size: 1.2rem; font-weight: bold; }
+.card-suit-center { font-size: 2rem; text-align: center; align-self: center; }
+
+.rojo { color: #dc2626; border: 2px solid #dc2626; }
+.negro { color: #0f172a; border: 2px solid #0f172a; }
+.virus { 
+  background: #7e22ce !important; 
+  color: #a855f7 !important; 
+  border: 2px solid #c084fc;
+  box-shadow: 0 0 12px #a855f7;
+}
+
+.card-front.selected {
+  transform: translateY(-15px);
+  box-shadow: 0 0 20px #00ff66;
+  border: 3px solid #00ff66;
+}
+
+/* CONTROLES */
+.user-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.botones-flujo {
+  display: flex;
+  gap: 10px;
+}
+.btn-action-discard, .btn-action-pass {
+  border: none;
+  padding: 10px 20px;
+  font-family: monospace;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.btn-action-discard { background: #00ff66; color: #070a0e; }
+.btn-action-discard:hover:not(:disabled) {
+  background: #00cc52; box-shadow: 0 0 15px rgba(0,255,102,0.5);
+}
+.btn-action-pass { background: #38bdf8; color: #070a0e; }
+.btn-action-pass:hover:not(:disabled) {
+  background: #0ea5e9; box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+}
+.btn-action-discard:disabled, .btn-action-pass:disabled {
+  background: #334155; color: #64748b; cursor: not-allowed; box-shadow: none;
+}
+
+/* OVERLAY FINAL */
+.overlay-final {
+  position: fixed;
+  top:0; left:0; width:100vw; height:100vh;
+  background: rgba(7, 10, 14, 0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+.modal-box {
+  text-align: center;
+  border: 2px solid #38bdf8;
+  padding: 40px;
+  background: #0f172a;
+  border-radius: 8px;
+  box-shadow: 0 0 30px rgba(56,189,248,0.3);
+}
+.btn-cyber-reload {
+  margin-top: 20px;
+  background: transparent;
+  color: #38bdf8;
+  border: 2px solid #38bdf8;
+  padding: 12px 24px;
+  cursor: pointer;
+  font-family: monospace;
+  font-weight: bold;
+}
+.btn-cyber-reload:hover { background: #38bdf8; color: #0f172a; }
+.error-text { color: #f87171; font-size: 0.8rem; margin-top: 5px; }
+
+
+/* Efecto visual para el Castigo 3: Revelado de cartas */
+.firewall-down {
+  animation: blink 2s infinite;
+  background-color: rgba(254, 240, 138, 0.95) !important; /* Tinte amarillo de advertencia */
+  border: 2px dashed #eab308 !important;
+}

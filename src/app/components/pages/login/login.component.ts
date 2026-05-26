@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../../services/auth.service';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common'; // Importante para el *ngIf
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, CommonModule], // Agregamos CommonModule
+  imports: [FormsModule, CommonModule], 
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -15,8 +15,6 @@ import { CommonModule } from '@angular/common'; // Importante para el *ngIf
 export class LoginComponent {
   email = '';
   password = '';
-  
-  // Variables para el feedback visual
   mensajeError: string = '';
   esExito: boolean = false;
 
@@ -30,7 +28,6 @@ export class LoginComponent {
     
     if (error) {
       this.esExito = false;
-      // Traducimos el error para que quede más pro
       if (error.message.includes('Invalid login credentials')) {
         this.mensajeError = "Email o contraseña incorrectos.";
       } else if (error.message.includes('Email not confirmed')) {
@@ -42,7 +39,6 @@ export class LoginComponent {
       this.esExito = true;
       this.mensajeError = "¡Ingreso exitoso! Entrando a la sala...";
       
-      // Esperamos un segundo para que el usuario vea el mensaje de éxito
       setTimeout(() => {
         window.location.href = '/'; 
       }, 1200);
@@ -50,8 +46,22 @@ export class LoginComponent {
   }
 
   fastLogin() {
-    this.email = 'admin1@royalbet.com';
-    this.password = 'admin1234';
-    this.mensajeError = ''; // Limpiamos si había algún error previo
+    this.email = 'ricardo@hotmail.com';
+    this.password = 'ricardo1234';
+    this.mensajeError = '';
+  }
+
+  fastlogin2(){
+    this.email = 'manuel@hotmail.com';
+    this.password = 'manuel1234';
+    this.mensajeError = '';
+
+  }
+
+  fastlogin3(){
+    this.email = 'jazmin@hotmail.com';
+    this.password = 'jazmin1234';
+    this.mensajeError = '';
+
   }
 }

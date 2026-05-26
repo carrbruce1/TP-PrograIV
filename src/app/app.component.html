@@ -20,9 +20,6 @@
             </ng-container>
 
             <ng-container *ngIf="usuarioLogueado">
-                <li>
-                    <a routerLink="/perfil" routerLinkActive="active">Mi Perfil</a>
-                </li>
                 <li class="user-info-nav">
                     <span class="user-name">{{ usuarioLogueado.email.split('@')[0] }}</span>
                     <button class="btn-logout-minimal" (click)="logout()">Salir</button>
@@ -38,4 +35,5 @@
 
 <main class="main-container">
     <router-outlet></router-outlet>
+    <app-chat-flotante></app-chat-flotante>
 </main>

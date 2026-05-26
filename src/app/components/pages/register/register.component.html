@@ -8,16 +8,25 @@
           <div class="col-md-6 mb-3">
             <label class="form-label">Nombre</label>
             <input type="text" name="nombre" [(ngModel)]="nombre" class="form-control" placeholder="Ej: Bruce" required>
+            @if (nombre.length > 0 && nombre.length < 3) {
+              <p>Debe ser más de 3 letra</p>
+            }
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">Apellido</label>
             <input type="text" name="apellido" [(ngModel)]="apellido" class="form-control" placeholder="Ej: Carr" required>
+            @if (apellido.length > 0 && apellido.length < 3) {
+              <p>Debe tener por lo menos 3 letras</p>
+            }
           </div>
         </div>
 
         <div class="mb-3">
           <label class="form-label">Edad</label>
           <input type="number" name="edad" [(ngModel)]="edad" class="form-control" placeholder="Mínimo 18 años" required>
+          @if (edad !== null && (edad < 0 || edad > 80)) {
+            <p>Ingrese una edad valida</p>
+          }
         </div>
 
         <div class="mb-3">
@@ -28,6 +37,9 @@
         <div class="mb-3">
           <label class="form-label">Contraseña</label>
           <input type="password" name="password" [(ngModel)]="password" class="form-control" placeholder="••••••••" required>
+          @if (password.length > 0 && password.length < 6) {
+            <p>Debe ser mas de 3 letras</p>
+          }
         </div>
 
         <button type="submit" class="btn btn-primary w-100 mb-3">

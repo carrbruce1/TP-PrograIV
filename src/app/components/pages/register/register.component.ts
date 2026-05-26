@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -19,6 +19,7 @@ export class RegisterComponent {
   nombre = '';
   apellido = '';
   edad: number | null = null;
+  // edad = null;
   
   mensajeError: string = ''; 
   esExito: boolean = false;  
@@ -28,6 +29,30 @@ export class RegisterComponent {
   async onRegister() {
     this.mensajeError = ''; 
     this.esExito = false;
+
+    if(
+      !this.nombre ||
+      !this.apellido ||
+      !this.email ||
+      !this.password ||
+      !this.edad === null
+    ){
+      this.mensajeError = 'Completa todos los campos';
+      return;
+    };
+    
+    if(this.edad === null){
+      this.mensajeError = "Datos invalidos";
+      return;
+    }
+
+   if(this.edad < 0 || this.edad > 80){
+
+  this.mensajeError =
+  'Ingrese una edad válida';
+
+  return;
+}
 
     const { data, error } = await this.auth.signUp(this.email, this.password, {
       nombre: this.nombre,
@@ -51,9 +76,11 @@ export class RegisterComponent {
       this.edad = null;
       
       setTimeout(() => {
-        this.router.navigate(['/login']);
+        this.router.navigate(['/']);
       }, 4000);
 
     }
   }
+
+  
 }

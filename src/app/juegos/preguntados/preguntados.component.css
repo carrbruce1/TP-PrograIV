@@ -1,0 +1,203 @@
+.trivia-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 85vh;
+  padding: 20px;
+  background-color: #06090e; /* Fondo ultra oscuro estilo terminal */
+}
+
+/* Banner superior con el récord de la última partida */
+.last-score-banner {
+  background: rgba(79, 172, 254, 0.1);
+  border: 1px dashed #00f2fe;
+  color: #00f2fe;
+  padding: 10px 24px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+.last-score-banner span {
+  color: #fff;
+  background: #00f2fe;
+  color: #06090e;
+  padding: 2px 6px;
+  margin-left: 5px;
+  border-radius: 2px;
+}
+
+/* Tarjeta Cyberpunk */
+.cyber-card {
+  background-color: #0d1117;
+  border-left: 4px solid #4facfe;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  padding: 40px;
+  width: 100%;
+  max-width: 650px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+  color: #c9d1d9;
+}
+
+/* Títulos y Subtítulos */
+.cyber-glitch-title {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  text-shadow: 2px 2px #4facfe, -2px -2px #00f2fe;
+  margin-bottom: 5px;
+}
+
+.cyber-subtitle {
+  font-family: 'Courier New', Courier, monospace;
+  color: #58a6ff;
+  font-size: 0.95rem;
+  letter-spacing: 2px;
+  margin-bottom: 35px;
+}
+
+/* Lista de reglas de sistema */
+.cyber-rules {
+  background: #161b22;
+  padding: 20px;
+  border-radius: 4px;
+  margin-bottom: 35px;
+  text-align: left;
+  border: 1px solid #21262d;
+}
+
+.rule-item {
+  margin: 14px 0;
+  font-size: 1rem;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.rule-item span {
+  color: #00f2fe;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+}
+
+/* Pregunta y Datos del juego */
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.cyber-badge {
+  background-color: #21262d;
+  color: #58a6ff;
+  border: 1px solid #388bfd;
+  padding: 4px 12px;
+  border-radius: 2px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.cyber-timer {
+  color: #00f2fe;
+  font-weight: bold;
+}
+
+.timer-critical {
+  color: #ff7b72;
+  animation: cyber-blink 0.8s infinite;
+}
+
+.cyber-score {
+  text-align: right;
+  font-family: 'Courier New', Courier, monospace;
+  color: #8b949e;
+  margin-bottom: 20px;
+}
+
+.cyber-score span {
+  color: #58a6ff;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.cyber-question {
+  font-size: 1.5rem;
+  color: #f0f6fc;
+  line-height: 1.4;
+  margin-bottom: 40px;
+  text-align: left;
+  border-bottom: 1px solid #21262d;
+  padding-bottom: 20px;
+}
+
+/* Botones de Opción de Respuesta */
+.cyber-options-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+}
+
+.btn-cyber-option {
+  background-color: #161b22;
+  border: 1px solid #30363d;
+  color: #c9d1d9;
+  padding: 18px;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+}
+
+.btn-cyber-option:hover {
+  background-color: #1f242c;
+  border-color: #4facfe;
+  color: #fff;
+  box-shadow: 0 0 10px rgba(79, 172, 254, 0.2);
+  transform: translateX(4px);
+}
+
+/* Botón de Enlace Principal */
+.btn-cyber-primary {
+  background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+  color: #06090e;
+  border: none;
+  padding: 16px 40px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+}
+
+.btn-cyber-primary:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
+}
+
+/* Spinner de carga */
+.cyber-spinner {
+  border: 3px solid rgba(255, 255, 255, 0.05);
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border-left-color: #4facfe;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 20px;
+}
+
+.loading-text {
+  font-family: 'Courier New', Courier, monospace;
+  color: #8b949e;
+}
+
+@keyframes spin { 100% { transform: rotate(360deg); } }
+@keyframes cyber-blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }

@@ -1,0 +1,49 @@
+<div class="chat-widget-container" [class.opened]="estaAbierto">
+  
+  <div class="chat-widget-header" (click)="toggleChat()">
+    <div class="header-left">
+      <span class="online-dot">●</span>
+      <h3>Chat de la Comunidad</h3>
+    </div>
+    <div class="header-right">
+      <span>{{ estaAbierto ? '➖' : '▲' }}</span>
+    </div>
+  </div>
+
+  <div *ngIf="estaAbierto" class="chat-widget-body">
+    
+    <ng-container *ngIf="usuarioActual !== 'Invitado'">
+      
+      <div class="messages-viewport" #scrollContainer>
+        <div *ngFor="let msg of mensajes" 
+             [ngClass]="{'my-message': msg.usuario === usuarioActual, 'other-message': msg.usuario !== usuarioActual}"
+             class="msg-row">
+          
+          <div class="msg-balloon">
+            <div class="msg-user" *ngIf="msg.usuario !== usuarioActual">{{ msg.usuario }}</div>
+            <p class="msg-text">{{ msg.texto }}</p>
+            <span class="msg-time">{{ msg.hora }}</span>
+          </div>
+          
+        </div>
+      </div>
+
+      <div class="chat-widget-footer">
+        <input type="text" 
+               [(ngModel)]="nuevoMensaje" 
+               (keyup.enter)="enviar()" 
+               placeholder="Escribí un mensaje..." />
+        <button (click)="enviar()">➤</button>
+      </div>
+
+    </ng-container>
+
+    <div *ngIf="usuarioActual === 'Invitado'" class="chat-locked-box">
+      <div class="locked-icon">🔒</div>
+      <p class="locked-title">SISTEMA RESTRINGIDO</p>
+      <p class="locked-text">Iniciá sesión con tu cuenta para interactuar en el chat en vivo.</p>
+    </div>
+
+  </div>
+
+</div>
