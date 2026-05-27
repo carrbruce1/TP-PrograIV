@@ -20,7 +20,6 @@ export class EncuestaComponent {
   constructor(private auth: AuthService) {}
 
   async enviarEncuesta() {
-    // Validación de campos obligatorios
     if (!this.juegoFavorito.trim() || !this.mejoras.trim()) {
       this.mensaje = "Por favor, completa los campos de juego y mejoras.";
       return;
