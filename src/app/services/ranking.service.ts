@@ -35,7 +35,7 @@ async guardarPuntaje(nombreUsuario: string, puntos: number, nombreJuego: string)
       .select('usuario, puntaje')
       .eq('juego', nombreJuego)
       .order('puntaje', { ascending: false })
-      .limit(10);
+      .limit(3);
 
     if (error) {
       console.error('Error al traer datos de la DB:', error);

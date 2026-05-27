@@ -17,17 +17,13 @@ export class RankingPosicionComponent implements OnInit {
   constructor(private rankingService: RankingService) {}
 
   ngOnInit() {
-    // Corregido a 'cambiarPestana' sin eñe
     this.cambiarPestana('ahorcado');
   }
 
-  // Corregido el nombre a 'cambiarPestana' para que machee con el HTML
   async cambiarPestana(idJuego: string) {
     this.juegoActivo = idJuego;
     this.cargando = true;
-
     this.listaRanking = await this.rankingService.obtenerRankingPorJuego(idJuego);
-    
     this.cargando = false;
   }
 }

@@ -7,6 +7,8 @@ import { JokersTrapComponent } from './juegos/jokers-trap/jokers-trap.component'
 import { AhorcadoComponent } from './juegos/ahorcado/ahorcado.component';
 import { MayorMenorComponent } from './juegos/mayor-menor/mayor-menor.component';
 import { PreguntadosComponent } from './juegos/preguntados/preguntados.component';
+import { EncuestaComponent } from './encuesta/encuesta.component';
+import { authGuard } from './services/auth.guard';
 
 
 export const routes: Routes = [
@@ -49,6 +51,14 @@ export const routes: Routes = [
         component: JokersTrapComponent,
     },
     // Fin juegos
+
+    //Inicio encuesta
+    {
+        path: 'encuesta',
+        component: EncuestaComponent,
+        canActivate: [authGuard],
+    },
+    //Fin encuesta
     { 
         path: '**',
         

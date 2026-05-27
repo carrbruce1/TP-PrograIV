@@ -1,0 +1,26 @@
+<div class="encuesta-container">
+  <h2>Encuesta Sprint 5</h2>
+  
+  <div class="form-group">
+    <label>Juego favorito:</label>
+    <input [(ngModel)]="juegoFavorito" type="text" placeholder="Ej: Ahorcado">
+  </div>
+
+  <div class="form-group">
+    <label>Dificultad (1-5):</label>
+    <input [(ngModel)]="dificultad" type="number" min="1" max="5">
+  </div>
+
+  <div class="form-group">
+    <label>¿Qué mejorarías?:</label>
+    <textarea [(ngModel)]="mejoras" rows="4"></textarea>
+  </div>
+
+  <div class="checkbox-group">
+    <input type="checkbox" [(ngModel)]="recomienda" id="rec">
+    <label for="rec">¿Nos recomendarías?</label>
+  </div>
+  
+  <button class="btn-enviar" (click)="enviarEncuesta()">Enviar Encuesta</button>
+  <p class="mensaje">{{mensaje}}</p>
+</div>

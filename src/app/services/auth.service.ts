@@ -6,7 +6,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class AuthService {
-  private supabase: SupabaseClient;
+  public supabase: SupabaseClient;
 
   constructor() {
   
@@ -45,7 +45,17 @@ export class AuthService {
   }
 
   
-
+async guardarUsuarioEnTabla(userId: string, email: string, metadata: any) {
+  return await this.supabase
+    .from('user')
+    .insert([{
+      id: userId,
+      email: email,
+      nombre: metadata.nombre,
+      apellido: metadata.apellido,
+      edad: metadata.edad
+    }]);
+}
 
 }
 

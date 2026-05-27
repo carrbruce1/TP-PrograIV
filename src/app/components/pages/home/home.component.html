@@ -1,10 +1,8 @@
 <main class="main-content">
   <header class="section-header">
-    <h1>Sala de Juegos</h1>
+    <h1>Portal de Juegos</h1>
     @if (!usuarioLogueado) {
-      <p class="status-msg warning">
-        Debes estar registrado para poder jugar.
-      </p>
+      <p class="status-msg warning">Debes estar registrado para poder jugar.</p>
     }
   </header>
 
@@ -14,31 +12,31 @@
         <div class="card-visual" [class.locked]="!usuarioLogueado">
           <i class="bi {{ juego.icono }}"></i>
           @if (!usuarioLogueado) {
-            <div class="overlay-lock">
-              <i class="bi bi-lock-fill"></i>
-              <span>BLOQUEADO</span>
-            </div>
+            <div class="overlay-lock"><i class="bi bi-lock-fill"></i> <span>BLOQUEADO</span></div>
           }
         </div>
-        
         <div class="card-body">
           <h3>{{ juego.nombre }}</h3>
-          
           @if (usuarioLogueado) {
-            <button [routerLink]="juego.ruta" class="btn-action">
-              ¡JUGAR AHORA!
-            </button>
+            <button [routerLink]="juego.ruta" class="btn-action">¡JUGAR AHORA!</button>
           } @else {
-            <button routerLink="/login" class="btn-disabled">
-              LOGUEATE PARA JUGAR
-            </button>
+            <button routerLink="/login" class="btn-disabled">LOGUEATE PARA JUGAR</button>
           }
         </div>
       </article>
     }
   </section>
 
-  <div class="tu-contenedor-del-home">
+  <section class="ranking-section">
+    <h2>Ranking de Jugadores</h2>
     <app-ranking-posiciones></app-ranking-posiciones>
-  </div>
+  </section>
+
+  <section class="encuesta-section">
+    <h2>Tu opinión cuenta</h2>
+    <p>¿Qué te pareció nuestra plataforma de juegos?</p>
+    <button routerLink="/encuesta" class="btn-primary">
+      Ir a la Encuesta
+    </button>
+  </section>
 </main>

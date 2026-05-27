@@ -28,45 +28,56 @@ export class RegisterComponent {
     this.mensajeError = ''; 
     this.esExito = false;
 
+
     if(!this.nombre || !this.apellido || !this.email || !this.password || this.edad == null){
       this.mensajeError = 'Completa todos los campos';
       return;
     }
     
-    if(this.edad < 0 || this.edad > 100){
+    if(this.edad < 0 || this.edad > 99){
       this.mensajeError = 'Ingrese una edad válida';
       return;
     }
 
     try {
-      const { data, error } = await this.auth.signUp(this.email, this.password, {
-        nombre: this.nombre,
-        apellido: this.apellido,
-        edad: this.edad
-      });
+      const metadata = { nombre: this.nombre, apellido: this.apellido, edad: this.edad };
+      const { data, error } = await this.auth.signUp(this.email, this.password, metadata);
 
       if (error) {
-        this.esExito = false;
-        this.mensajeError = "Error: " + error.message;
-      } else {
-        await this.auth.signOut(); 
-
-        this.esExito = true;
-        this.mensajeError = "¡Cuenta creada! Por favor, confirmá tu email. Redirigiendo al Home...";
+        if (error.message.includes('User already registered')) {
+          this.mensajeError = 'Ese email ya está registrado. Por favor, usá otro.';
+        } else if (error.message.includes('Password should be')) {
+          this.mensajeError = 'La contraseña debe tener al menos 6 caracteres.';
+        } else {
+          this.mensajeError = 'Error: ' + error.message;
+        }
+      } else if (data.user) {
         
-        // 2. Limpiamos formulario
-        this.email = '';
-        this.password = '';
-        this.nombre = '';
-        this.apellido = '';
-        this.edad = null;
+        const { error: dbError } = await this.auth.guardarUsuarioEnTabla(data.user.id, this.email, metadata);
 
-        setTimeout(() => {
-          this.router.navigate(['/home']); 
-        }, 4000);
+        if (dbError) {
+          this.mensajeError = "Usuario creado, pero hubo un error al guardar sus datos personales.";
+          console.error("Error BD:", dbError);
+        } else {
+          // ÉXITO
+          await this.auth.signOut();
+          this.esExito = true;
+          this.mensajeError = "¡Cuenta creada! Por favor, confirmá tu email. Redirigiendo al Home...";
+          
+          // Limpieza
+          this.email = '';
+          this.password = '';
+          this.nombre = '';
+          this.apellido = '';
+          this.edad = null;
+          
+          setTimeout(() => {
+            this.router.navigate(['/home']);
+          }, 4000);
+        }
       }
     } catch (err) {
-      this.mensajeError = "Ocurrió un error inesperado al registrar.";
+      this.mensajeError = "Ocurrió un error inesperado.";
       console.error(err);
     }
   }
